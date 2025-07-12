@@ -1,42 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Localização do Usuário</title>
+  <meta charset="UTF-8" />
+  <title>Detectar Localização</title>
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
-      margin-top: 100px;
+      padding: 40px;
     }
-    #status {
-      margin-bottom: 20px;
-      font-weight: bold;
+    #location {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div id="status">Obtendo sua localização...</div>
+
+  <h1>Detectar Localização do Usuário</h1>
+  <p>Clique no botão abaixo para permitir o acesso à sua localização:</p>
+
+  <button onclick="solicitarLocalizacao()">Detectar Localização</button>
+
   <div id="location"></div>
 
   <script>
-    function mostrarLocalizacao(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      document.getElementById('status').textContent = 'Localização detectada:';
-      document.getElementById('location').textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+    function solicitarLocalizacao() {
+      const status = document.getElementById('location');
+
+      if (!navigator.geolocation) {
+        status.textContent = 'Geolocalização não é suportada neste navegador.';
+        return;
+      }
+
+      navigator.permissions.query({ name: 'geolocation' }).then(function(result) {
+        if (result.state === 'granted') {
+          // Permissão já concedida
+          obterLocalizacao();
+        } else if (result.state === 'prompt') {
+          // Vai pedir permissão
+          obterLocalizacao();
+        } else if (result.state === 'denied') {
+          status.textContent = 'Permissão de localização foi negada. Verifique as configurações do navegador.';
+        }
+      });
     }
 
-    function erroLocalizacao(error) {
-      document.getElementById('status').textContent = 'Erro ao obter localização.';
-      document.getElementById('location').textContent = `Motivo: ${error.message}`;
-    }
-
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(mostrarLocalizacao, erroLocalizacao);
-    } else {
-      document.getElementById('status').textContent = 'Geolocalização não suportada pelo navegador.';
+    function obterLocalizacao() {
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          document.getElementById('location').textContent =
+            `Latitude: ${lat.toFixed(6)} | Longitude: ${lon.toFixed(6)}`;
+        },
+        function(error) {
+          let msg = 'Erro desconhecido.';
+          if (error.code === 1) msg = 'Permissão negada pelo usuário.';
+          if (error.code === 2) msg = 'Posição indisponível.';
+          if (error.code === 3) msg = 'Tempo limite excedido.';
+          document.getElementById('location').textContent = `Erro: ${msg}`;
+        }
+      );
     }
   </script>
+
 </body>
 </html>
