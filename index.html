@@ -23,19 +23,19 @@
 <body>
 
   <h1>Enviar Localização</h1>
-  <p>Ao clicar no botão, sua localização será enviada para o servidor com segurança.</p>
+  <p>Clique no botão para enviar sua localização ao servidor:</p>
   <button onclick="enviarLocalizacao()">Enviar localização</button>
 
   <div id="status"></div>
 
   <script>
-    const API_URL = 'https://localizacao-backend-vdyc.onrender.com'; // ⬅️ Substitua pelo seu link real do Render
+    const API_URL = 'https://SEU-BACKEND.onrender.com/api/localizacao'; // Substitua com seu link real
 
     function enviarLocalizacao() {
       const status = document.getElementById('status');
 
       if (!navigator.geolocation) {
-        status.textContent = 'Seu navegador não suporta geolocalização.';
+        status.textContent = 'Geolocalização não suportada.';
         return;
       }
 
@@ -54,7 +54,7 @@
           })
           .then(res => {
             if (res.ok) {
-              status.textContent = '📍 Localização enviada com sucesso.';
+              status.textContent = '📍 Localização enviada com sucesso!';
             } else {
               status.textContent = '❌ Erro ao enviar localização.';
             }
