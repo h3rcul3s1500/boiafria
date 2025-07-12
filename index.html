@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Localização do Usuário</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+    #status {
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="status">Obtendo sua localização...</div>
+  <div id="location"></div>
+
+  <script>
+    function mostrarLocalizacao(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      document.getElementById('status').textContent = 'Localização detectada:';
+      document.getElementById('location').textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+    }
+
+    function erroLocalizacao(error) {
+      document.getElementById('status').textContent = 'Erro ao obter localização.';
+      document.getElementById('location').textContent = `Motivo: ${error.message}`;
+    }
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(mostrarLocalizacao, erroLocalizacao);
+    } else {
+      document.getElementById('status').textContent = 'Geolocalização não suportada pelo navegador.';
+    }
+  </script>
+</body>
+</html>
