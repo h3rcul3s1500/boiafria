@@ -2,69 +2,73 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Detectar Localização</title>
+  <title>Coletar Localização</title>
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
       padding: 40px;
     }
-    #location {
-      margin-top: 20px;
-      font-size: 18px;
-    }
     button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       font-size: 16px;
       cursor: pointer;
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Detectar Localização do Usuário</h1>
-  <p>Clique no botão abaixo para permitir o acesso à sua localização:</p>
+  <h1>Enviar Localização</h1>
+  <p>Ao clicar no botão, sua localização será enviada para o servidor com segurança.</p>
+  <button onclick="enviarLocalizacao()">Enviar localização</button>
 
-  <button onclick="solicitarLocalizacao()">Detectar Localização</button>
-
-  <div id="location"></div>
+  <div id="status"></div>
 
   <script>
-    function solicitarLocalizacao() {
-      const status = document.getElementById('location');
+    const API_URL = 'https://localizacao-backend-vdyc.onrender.com'; // ⬅️ Substitua pelo seu link real do Render
+
+    function enviarLocalizacao() {
+      const status = document.getElementById('status');
 
       if (!navigator.geolocation) {
-        status.textContent = 'Geolocalização não é suportada neste navegador.';
+        status.textContent = 'Seu navegador não suporta geolocalização.';
         return;
       }
 
-      navigator.permissions.query({ name: 'geolocation' }).then(function(result) {
-        if (result.state === 'granted') {
-          // Permissão já concedida
-          obterLocalizacao();
-        } else if (result.state === 'prompt') {
-          // Vai pedir permissão
-          obterLocalizacao();
-        } else if (result.state === 'denied') {
-          status.textContent = 'Permissão de localização foi negada. Verifique as configurações do navegador.';
-        }
-      });
-    }
-
-    function obterLocalizacao() {
       navigator.geolocation.getCurrentPosition(
-        function(position) {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          document.getElementById('location').textContent =
-            `Latitude: ${lat.toFixed(6)} | Longitude: ${lon.toFixed(6)}`;
+        (pos) => {
+          const data = {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            timestamp: new Date().toISOString()
+          };
+
+          fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          })
+          .then(res => {
+            if (res.ok) {
+              status.textContent = '📍 Localização enviada com sucesso.';
+            } else {
+              status.textContent = '❌ Erro ao enviar localização.';
+            }
+          })
+          .catch(err => {
+            status.textContent = 'Erro de rede: ' + err.message;
+          });
         },
-        function(error) {
+        (err) => {
           let msg = 'Erro desconhecido.';
-          if (error.code === 1) msg = 'Permissão negada pelo usuário.';
-          if (error.code === 2) msg = 'Posição indisponível.';
-          if (error.code === 3) msg = 'Tempo limite excedido.';
-          document.getElementById('location').textContent = `Erro: ${msg}`;
+          if (err.code === 1) msg = 'Permissão negada.';
+          if (err.code === 2) msg = 'Posição indisponível.';
+          if (err.code === 3) msg = 'Tempo esgotado.';
+          status.textContent = `Erro: ${msg}`;
         }
       );
     }
