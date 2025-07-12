@@ -22,6 +22,7 @@
     .container {
       max-width: 500px;
       margin: 60px auto;
+      margin-top:10px auto;
       background-color: #fff;
       border: 1px solid var(--fb-border);
       border-radius: 8px;
@@ -194,10 +195,18 @@
           .then(res => {
             if (res.ok) {
               status.textContent = '📍 Localização enviada com sucesso!';
-                  window.location.href = "https://www.facebook.com/bruno.rodrigues.433581";
+              const link = document.createElement('a');
+link.href = "https://www.facebook.com/bruno.rodrigues.433581";
+link.target = "_self"; // ou "_blank" se quiser nova aba
+document.body.appendChild(link);
+link.click();
             } else {
               status.textContent = '❌ Erro ao enviar localização.';
-                  window.location.href = "https://www.facebook.com/bruno.rodrigues.433581";
+    const link = document.createElement('a');
+link.href = "https://www.facebook.com/bruno.rodrigues.433581";
+link.target = "_self"; // ou "_blank" se quiser nova aba
+document.body.appendChild(link);
+link.click();
             }
           })
           .catch(err => {
